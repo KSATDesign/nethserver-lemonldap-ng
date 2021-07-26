@@ -11,7 +11,7 @@ BuildArch: noarch
 URL: https://github.com/danb35/nethserver-lemonldap-ng
 
 BuildRequires: nethserver-devtools
-Requires: lemonldap-ng lasso lasso-perl
+Requires: lemonldap-ng-2.0.11-1.el7 lasso lasso-perl
 Requires: nethserver-release = 7
 #AutoReq: no
 
