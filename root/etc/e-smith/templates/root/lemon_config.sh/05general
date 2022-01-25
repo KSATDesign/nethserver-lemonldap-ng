@@ -18,13 +18,35 @@ sed -i "s/auth\.example\.com/$portalfqdn/g" /var/lib/lemonldap-ng/conf/lmConf-1.
 sed -i "s/manager\.example\.com/$managerfqdn/g" /var/lib/lemonldap-ng/conf/lmConf-1.json
 sed -i "s/example\.com/$DomainName/g" /var/lib/lemonldap-ng/conf/lmConf-1.json
 
+# Check if LLNG configuration has already been changed
+if [ -e /var/lib/lemonldap-ng/conf/lmConf-2.json ]; then
+  response = ""
+  echo "WARNING: This script is intended to be used only for initial"
+  echo "configuration of LemonLDAP::NG.  Continuing may undo prior"
+  echo "configuration changes and result in unexpected operation."
+  read -p "Continue (y/N)?" response
+  shopt -s nocasematch
+  if [[ \$response != "Y" ]]; then
+    echo "Exiting."
+        exit 1
+  fi
+  shopt -u nocasematch
+fi
+
+# Check for cfgDate property and add if missing
+# See https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/-/issues/2566
+if ! grep -q cfgDate /var/lib/lemonldap-ng/conf/lmConf-1.json; then
+  echo "Adding cfgDate property to lmConf-1.json"
+  sed -i \"88 a \\\"cfgDate\\\": \\\"\$( date +%s )\\\",\" /var/lib/lemonldap-ng/conf/lmConf-1.json
+fi
+
 # Remove sample applications from portal menu
 /usr/libexec/lemonldap-ng/bin/lemonldap-ng-cli -yes 1 delKey \\
-	applicationList 1sample
+        applicationList 1sample
 /usr/libexec/lemonldap-ng/bin/lemonldap-ng-cli -yes 1 delKey \\
-	\"locationRules/\" \"test1.$DomainName\"
+        \"locationRules/\" \"test1.$DomainName\"
 /usr/libexec/lemonldap-ng/bin/lemonldap-ng-cli -yes 1 delKey \\
-	\"locationRules/\" \"test2.$DomainName\"
+        \"locationRules/\" \"test2.$DomainName\"
 
 # Set portal to use HTTPS URLs, secure cookies
 # Also add Nethserver imaging, remove register button

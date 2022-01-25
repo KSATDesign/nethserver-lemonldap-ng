@@ -1,7 +1,7 @@
 Summary: NethServer configuration for LemonLDAP::NG
 %define name nethserver-lemonldap-ng
-%define version 0.2.0
-%define release 6
+%define version 0.2.3
+%define release 1
 Name: %{name}
 Version: %{version}
 Release: %{release}%{?dist}
@@ -42,6 +42,21 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Wed Aug  4 2021 Dan Brown <dan@familybrown.org> 0.2.3-1.ns7
+- Allow IP-based access restriction on manager
+
+* Wed Jul 28 2021 Dan Brown <dan@familybrown.org> 0.2.2-3.ns7
+- Moved cfgDate check
+
+* Tue Jul 27 2021 Dan Brown <dan@familybrown.org> 0.2.2-2.ns7
+- Fix exported vars for local OpenLDAP
+
+* Tue Jul 27 2021 Dan Brown <dan@familybrown.org> 0.2.2-1.ns7
+- Warn on re-running lemon_config.sh
+
+* Mon Jul 26 2021 Dan Brown <dan@familybrown.org> 0.2.1-1.ns7
+- Workaround for https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/-/issues/2566
+
 * Sat Jul 10 2021 Dan Brown <dan@familybrown.org> 0.2.0-6.ns7
 - Properly set exported vars
 
